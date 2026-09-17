@@ -1,35 +1,42 @@
 # K1-Series-CFS-Nozzle-Wiper
 Creality K1 Series CFS Nozzle Wiper Upgrade 
 
->This macro replaces the stock Creality Print nozzle wiping routine with a more precise, variable-width scrubbing motion designed specifically for the CFS Purge Chute system.
-## IMPORTANT
-1. You're doing this willingly
-2. I am not responsible if you damage your printer or whatever worse may come of it
-3. This is required to root the machine and totally reversible.
+# Creality K1 Series CFS Nozzle Wiper Upgrade (K1 Max Fork)
 
-## Update
+This repository is a fork of [supernovaBvS/K1-Series-CFS-Nozzle-Wiper](https://github.com/supernovaBvS/K1-Series-CFS-Nozzle-Wiper), updated and configured with verified **Creality K1 Max** dimensions and coordinate values.
 
-This is a footage of utilizing the purge chute nozzle wiper for my K1C while using Creality Print. https://www.youtube.com/shorts/c9hV-eFskMg
+---
 
-Im also working on getting creality print to do KAMP as default, please let me know if you guys are interested!
+## 📌 Overview & Fork Changes
 
-## 🛠 Installation
-1. SSH into your machine or access via Fluidd/Mainsail
-2. Download cfs_nozzle_clear.cfg from this repository and upload to your printer's config directory (/usr/data/printer_data/config/)
-3. Add this line to your `printer.cfg` if not already present:
-   ```
-   [include cfs_nozzle_clear.cfg]
-   ```
-4. Restart Klipper
+When retrofitting or running the **Creality Filament System (CFS)** on K1-series machines, the stock nozzle wiping routine often defaults to bed-mounted wipe sequences rather than utilizing the external rear purge chute wiper. 
 
-## ⚠️ Warning for K1 Max Users
-The default coordinates in this file are for the K1/K1C. If you are using a K1 Max, you must edit the CENTRE_X and CENTRE_Y coordinates in the .cfg to match your larger build plate's chute position
->Thanks to According-Camp-1867 on reddit providing the K1 Max approximately position
+This macro replaces the standard wiping behavior with an optimized, variable-width scrubbing motion inside the CFS purge chute.
 
-## ⚙️ Configuration
+### 🌟 What's Updated in This Fork:
+- **Calibrated for K1 Max:** Adjusted X, Y, and Z travel limits, park locations, and wipe centers specifically tailored to the larger 300 × 300 mm bed volume of the K1 Max.
+- **Chute Clearance Safety:** Tuned stroke bounds to prevent toolhead or nozzle collisions with the metal casing of the K1 Max purge chute assembly.
+- **Ready-to-use Configurations:** Eliminates the guesswork of recalculating coordinates when running this macro on a K1 Max.
 
-You can customize the wipe behavior directly in the macro or by passing parameters:
-- WIPES: Number of back-and-forth passes (Default: 8).
-- WIDTH: The total horizontal sweep distance in mm (Default: 13 for K1C, 8 for K1 Max)  .
-- CENTRE_X: If your nozzle isn't hitting the centre of the rubber, adjust this value in the .cfg file (Default: 167.0 for K1C, 205.0 for K1 Max).
-- CENTRE_Y: If your nozzle isn't hitting the centre of the rubber, adjust this value in the .cfg file (Default: 226.0 for K1C, 305.0 for K1 Max).
+---
+
+## 🚀 Key Advantages
+
+* **Reclaim Full Build Plate Area:** Frees up build plate real estate by utilizing the external chute silicone wiper instead of bed-mounted brushes.
+* **Universal Bed Compatibility:** Use textured PEI, smooth plates, or aftermarket build surfaces without worrying about clip clearance or wiper collisions.
+* **Variable-Width Scrubbing:** Utilizes a wider, alternating X-axis wiping path to prevent prematurely cutting a deep trench into the silicone wiper.
+* **Collision Protection:** Incorporates safe Z-hop clearances and conditional homing logic before maneuvering into the rear purge chute.
+
+---
+
+## 🛠️ K1 Max Macro Configuration
+
+Below are the calibrated baseline values for the K1 Max. Adjust within your `printer.cfg` or included macro file as needed:
+
+```ini
+# Example wiper coordinates calibrated for K1 Max:
+variable_wiper_x: 204          # Wiper center on K1 Max (tune between 203 - 205 depending on chute tolerance)
+variable_wiper_y: 305          # Rear Y position for wiper engagement
+variable_wipe_dist: 6          # Wipe stroke width (8mm safe; up to 10-12mm if chute tab is trimmed)
+variable_wipe_qty: 4           # Number of wipe passes
+variable_safe_z: 10            # Safe Z clearance before moving to rear chute
